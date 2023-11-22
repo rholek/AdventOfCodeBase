@@ -4,19 +4,16 @@ namespace AdventOfCode;
 
 public static class PuzzlesRunner
 {
-    public static int Year { get; private set; } = DateTime.Now.Year;
-
-    public static void SetYear(int year)
-    {
-        Year = year;
-    }
+    public static int? Year { get; set; }
 
     private static Puzzle GetPuzzle(int day)
     {
+        if (Year is null)
+            throw new InvalidOperationException("Year not set");
+
         var dayString = "Day" + day.ToString().PadLeft(2, '0');
-        var typeName = $"AdventOfCode{Year}.Puzzles.{dayString}";
         var entryAssembly = Assembly.GetEntryAssembly() ?? throw new ArgumentNullException();
-        var type = entryAssembly.GetType(typeName) ?? throw new InvalidOperationException($"Cannot create puzzle for day {day}.");
+        var type = entryAssembly.GetTypes().SingleOrDefault(x => x.Name == dayString) ?? throw new InvalidOperationException($"Cannot create puzzle for day {day}.");
         return Activator.CreateInstance(type) as Puzzle ?? throw new InvalidOperationException($"Cannot create puzzle for day {day}.");
     }
 
