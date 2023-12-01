@@ -21,8 +21,8 @@ public abstract class Puzzle
     private string? inputTextCache;
     protected string InputText => inputTextCache ??= DownloadInput().Result;
 
-    private IList<string>? lines;
-    protected IList<string> Lines => lines ??= InputText.Trim().Split(NEW_LINE).Select(x => x.Trim()).ToList();
+    private IReadOnlyList<string>? lines;
+    protected IReadOnlyList<string> Lines => lines ??= InputText.Trim().Split(NEW_LINE).Select(x => x.Trim()).ToList();
 
     protected IList<string> AllLinesWithoutTrim => InputText.Split(NEW_LINE).ToList();
 
@@ -36,6 +36,14 @@ public abstract class Puzzle
             yield return parseLine(line);
     }
 
+    /// <summary>
+    /// Pattern:
+    /// %N or %n integer
+    /// %D or %d numeric
+    /// %S or %s string
+    /// %C or %c char
+    /// %% percent symbol literal 
+    /// </summary>
     protected IEnumerable<ParserResult> ParseInput(string pattern)
     {
         foreach (var line in Lines)

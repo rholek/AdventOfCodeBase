@@ -21,6 +21,18 @@ public static class Extensions
         return o.As<int>();
     }
 
+    public static long AsLong(this object o)
+    {
+        return o.As<long>();
+    }
+
+    public static long ParseAsLong(this object o)
+    {
+        if (o is char c)
+            return long.Parse(c.ToString());
+        return o.As<long>();
+    }
+
     public static decimal AsDecimal(this object o)
     {
         return o.As<decimal>();
