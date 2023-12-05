@@ -22,14 +22,48 @@ public static class ConsoleOutputExtensions
         Console.WriteLine(o);
     }
 
+    public static void Dump(this object o, ConsoleColor color)
+    {
+        var originalColor = Console.ForegroundColor;
+        try
+        {
+            Console.ForegroundColor = color;
+            Dump(o);
+        }
+        finally
+        {
+            Console.ForegroundColor = originalColor;
+        }
+    }
+
+    public static bool Ask(this object o, ConsoleColor color)
+    {
+        var originalColor = Console.ForegroundColor;
+        try
+        {
+            Console.ForegroundColor = color;
+            Dump(o);
+        }
+        finally
+        {
+            Console.ForegroundColor = originalColor;
+        }
+
+        var read = Console.ReadLine().ToLower();
+        Console.SetCursorPosition(0, Console.CursorTop - 1);
+        return read.In("yes", "y");
+    }
+
     public static T Part1<T>(this T o)
     {
+        ResultHolder.Part1 = o.ToString();
         Console.WriteLine("Part 1: " + o);
         return o;
     }
 
     public static T Part2<T>(this T o)
     {
+        ResultHolder.Part2 = o.ToString();
         Console.WriteLine("Part 2: " + o);
         return o;
     }

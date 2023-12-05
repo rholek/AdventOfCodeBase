@@ -4,6 +4,8 @@ namespace AdventOfCode;
 
 public static class ExtraMath
 {
+    public const double TOLERANCE = 10e-15;
+
     /// <summary>
     /// Greatest common divisor
     /// </summary>
