@@ -67,8 +67,8 @@ public class AdventOfCodeData
                     "Found multiple inputs:".Dump(ConsoleColor.Yellow);
                     foreach (var node in allNodes)
                     {
-                        node.InnerText.TrimEnd().Dump();
-                        if ("Should use this?".Ask(ConsoleColor.Magenta))
+                        node.InnerText.TrimEnd().Dump(ConsoleColor.DarkMagenta);
+                        if ("Should use this?".Ask(ConsoleColor.DarkCyan))
                             return node.InnerText;
                     }
 

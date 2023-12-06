@@ -280,6 +280,11 @@ public static class Extensions
         return string.Join(string.Empty, items);
     }
 
+    public static IEnumerable<string> SplitBySpace(this string input, bool removeEmpty = true)
+    {
+        return input.Split(" ", removeEmpty ? StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries : StringSplitOptions.None);
+    }
+
     public static IEnumerable<string> SplitByLine(this string input) => input.Split(Environment.NewLine);
 
     public static IEnumerable<string> SplitByDoubleLine(this string input) => input.Split($"{Environment.NewLine}{Environment.NewLine}");
