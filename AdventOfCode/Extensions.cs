@@ -124,6 +124,16 @@ public static class Extensions
         return p.Contains(data);
     }
 
+    public static IEnumerable<T> AsEnumerableWithOneItem<T>(this T item)
+    {
+        return new[] { item };
+    }
+
+    public static List<T> AsListWithOneItem<T>(this T item)
+    {
+        return item.AsEnumerableWithOneItem().ToList();
+    }
+
     public static List<List<T>> ChunkBy<T>(this List<T> source, int chunkSize)
     {
         return source
@@ -264,6 +274,10 @@ public static class Extensions
     public static string Join<T>(this IEnumerable<T> items, string separator = ",")
     {
         return string.Join(separator, items);
+    }
+    public static string ConcatIntoString(this IEnumerable<string> items)
+    {
+        return string.Join(string.Empty, items);
     }
 
     public static IEnumerable<string> SplitByLine(this string input) => input.Split(Environment.NewLine);
