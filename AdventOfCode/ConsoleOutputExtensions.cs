@@ -38,20 +38,31 @@ public static class ConsoleOutputExtensions
 
     public static bool Ask(this object o, ConsoleColor color)
     {
-        var originalColor = Console.ForegroundColor;
+        o.Dump(color);
+
         try
         {
-            Console.ForegroundColor = color;
-            Dump(o);
+            "Yes(Y/Enter) or No(n/Esc)".Dump(ConsoleColor.DarkCyan);
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+
+            while (true)
+            {
+                var key = Console.ReadKey(true);
+                if (key.Key is ConsoleKey.Enter or ConsoleKey.Y)
+                    return true;
+                if (key.Key is ConsoleKey.Escape or ConsoleKey.N)
+                    return false;
+
+                Console.WriteLine();
+                "Invalid option".Dump(ConsoleColor.Red);
+            }
         }
         finally
         {
-            Console.ForegroundColor = originalColor;
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, Console.CursorTop);
         }
 
-        var read = Console.ReadLine().ToLower();
-        Console.SetCursorPosition(0, Console.CursorTop - 1);
-        return read.In("yes", "y");
     }
 
     public static T Part1<T>(this T o)
