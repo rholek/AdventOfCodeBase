@@ -55,3 +55,12 @@ public static class PuzzlesRunner
     public static Puzzle Day24 => GetPuzzle(24);
     public static Puzzle Day25 => GetPuzzle(25);
 }
+
+public static class PuzzleExtensions
+{
+    public static void Run(this IEnumerable<Puzzle> puzzles)
+    {
+        foreach (var puzzle in puzzles)
+            puzzle.Run();
+    }
+}
