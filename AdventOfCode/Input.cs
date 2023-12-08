@@ -42,11 +42,14 @@ public class Input
         factoryToUse = factoryPart2 ?? factory;
         cache = null;
         lines = null;
+        IsPart1 = false;
     } 
 
     #endregion
 
     #region Input file processing
+
+    public bool IsPart1 { get; private set; } = true;
 
     public string InputText => cache ??= factoryToUse();
 

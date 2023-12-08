@@ -1,5 +1,7 @@
 ﻿using AdventOfCode.Api;
+using AdventOfCode.Attributes;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace AdventOfCode;
 
@@ -20,13 +22,19 @@ public abstract class Puzzle
         Console.WriteLine("Running with test data");
         Console.WriteLine("-----------------------------------------------------");
 
-        using (var _ = ResultHolder.Begin())
+        var runTestData = !GetType().GetCustomAttributes().OfType<SkipTestDataAttribute>().Any();
+        if (runTestData)
         {
+            using var _ = ResultHolder.Begin();
             RunInternal(inputLoader.TestInput);
             if (ResultHolder.Part1Set && !inputLoader.Answers.CheckTestResult(ResultHolder.Part1, 1))
                 return;
             if (ResultHolder.Part2Set && !inputLoader.Answers.CheckTestResult(ResultHolder.Part2, 2))
                 return;
+        }
+        else
+        {
+            "Test data skipped (SkipTestData attribute found)!".Dump(ConsoleColor.DarkYellow);
         }
 
         Console.WriteLine();
