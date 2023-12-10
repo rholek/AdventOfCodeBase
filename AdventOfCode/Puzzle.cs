@@ -11,16 +11,16 @@ public abstract class Puzzle
 
     public void Run()
     {
-        Console.WriteLine("Running " + GetType().Name);
-        Console.WriteLine("-----------------------------------------------------");
+        $"Running {GetType().Name}".Dump(ConsoleColor.Blue);
+        "-----------------------------------------------------".Dump(ConsoleColor.DarkGray);
         Console.WriteLine();
 
         var stopwatch = Stopwatch.StartNew();
         var day = GetType().Name.Replace("Day", "").AsInt();
         var inputLoader = new AdventOfCodeData(day);
 
-        Console.WriteLine("Running with test data");
-        Console.WriteLine("-----------------------------------------------------");
+        "Running with test data".Dump(ConsoleColor.Blue);
+        "-----------------------------------------------------".Dump(ConsoleColor.DarkGray);
 
         var runTestData = !GetType().GetCustomAttributes().OfType<SkipTestDataAttribute>().Any();
         if (runTestData)
@@ -38,12 +38,12 @@ public abstract class Puzzle
         }
 
         Console.WriteLine();
-        Console.WriteLine("-----------------------------------------------------");
-        Console.WriteLine(GetType().Name + " (test data) run for " + stopwatch.ElapsedMilliseconds + "ms.");
+        "-----------------------------------------------------".Dump(ConsoleColor.DarkGray);
+        $"{GetType().Name} (test data) run for {stopwatch.ElapsedMilliseconds}ms.".Dump(ConsoleColor.DarkGray);
 
         Console.WriteLine();
-        Console.WriteLine("Running with real data");
-        Console.WriteLine("-----------------------------------------------------");
+        "Running with real data".Dump(ConsoleColor.Blue);
+        "-----------------------------------------------------".Dump(ConsoleColor.DarkGray);
         Console.WriteLine();
         using (var _ = ResultHolder.Begin())
         {
@@ -55,8 +55,8 @@ public abstract class Puzzle
         }
 
         Console.WriteLine();
-        Console.WriteLine("-----------------------------------------------------");
-        Console.WriteLine(GetType().Name + " (real data) run for " + stopwatch.ElapsedMilliseconds + "ms.");
+        "-----------------------------------------------------".Dump(ConsoleColor.DarkGray);
+        $"{GetType().Name} (real data) run for {stopwatch.ElapsedMilliseconds}ms.".Dump(ConsoleColor.DarkGray);
         Console.WriteLine();
     }
 

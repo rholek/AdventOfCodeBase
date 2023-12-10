@@ -68,4 +68,19 @@ public class DirectionTest
         (5, 5).GetAdjacent().Should().BeEquivalentTo(new[] { (4, 4), (4, 5), (6, 6), (6, 4), (4, 6), (5, 4), (5, 6), (6, 5) });
         (5, 5).GetAdjacentWithoutDiagonal().Should().BeEquivalentTo(new[] { (4, 5), (5, 4), (5, 6), (6, 5) });
     }
+
+    [Theory]
+    [InlineData(5, 5, Direction.Up, 5, 4)]
+    [InlineData(5, 5, Direction.Right, 6, 5)]
+    [InlineData(5, 5, Direction.Down, 5, 6)]
+    [InlineData(5, 5, Direction.Left, 4, 5)]
+    [InlineData(5, 5, Direction.UpRight, 6, 4)]
+    [InlineData(5, 5, Direction.DownRight, 6, 6)]
+    [InlineData(5, 5, Direction.DownLeft, 4, 6)]
+    [InlineData(5, 5, Direction.UpLeft, 4, 4)]
+    public void Direction_GetDirectionTest(int columnIn, int rowIn,  Direction direction, int columnOut, int rowOut)
+    {
+        (columnIn, rowIn).GetDirection((columnOut, rowOut)).Should().Be(direction);
+    }
+
 }

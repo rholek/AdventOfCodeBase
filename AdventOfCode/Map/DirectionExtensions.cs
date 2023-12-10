@@ -133,4 +133,26 @@ public static class DirectionExtensions
                 yield return (c, r);
         }
     }
+
+    public static Direction GetDirection(this Point2D from, Point2D to)
+    {
+        var rowDiff = to.row - from.row;
+        var columnDiff = to.column - from.column;
+        if (rowDiff != 0 && columnDiff != 0 && columnDiff.Abs() != rowDiff.Abs())
+            throw new InvalidOperationException("Cannot detect direction, not 45°");
+        
+        if (rowDiff == 0)
+            return columnDiff > 0 ? Direction.Right : Direction.Left;
+
+        if (columnDiff == 0)
+            return rowDiff > 0 ? Direction.Down : Direction.Up;
+
+        if (rowDiff > 0 && columnDiff > 0)
+            return Direction.DownRight;
+        if (rowDiff > 0 && columnDiff < 0)
+            return Direction.DownLeft;
+        if (rowDiff < 0 && columnDiff > 0)
+            return Direction.UpRight;
+        return Direction.UpLeft;
+    }
 }

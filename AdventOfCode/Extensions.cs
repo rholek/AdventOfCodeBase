@@ -66,6 +66,11 @@ public static class Extensions
         return Convert.ToString(letter);
     }
 
+    public static string[] ToStringArray(this string input)
+    {
+        return input.ToCharArray().Select(x => x.AsString()).ToArray();
+    }
+
     public static bool BetweenInclusive(this int number, int lower, int higher)
     {
         return lower <= number && number <= higher;
@@ -119,7 +124,7 @@ public static class Extensions
 
     public static bool In(this object data, params object[] p)
     {
-        if (p.Length == 1 && p[1] is IEnumerable enumerable)
+        if (p is [IEnumerable enumerable])
             return data.In(enumerable.OfType<object>().ToArray());
         return p.Contains(data);
     }
