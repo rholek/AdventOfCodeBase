@@ -1,8 +1,4 @@
-﻿using AdventOfCode.StandardAlgorithms;
-using FluentAssertions;
-using Xunit;
-
-namespace AdventOfCodeBase.Tests;
+﻿namespace AdventOfCodeBase.Tests;
 
 public class PathFindingTests
 {
@@ -20,7 +16,4 @@ public class PathFindingTests
         var path = pathFinding.GetPath(1, 5);
         path.Should().BeEquivalentTo(new[] { 1, 2, 3, 4, 5 }, c => c.WithStrictOrdering());
     }
-
-
-
 }

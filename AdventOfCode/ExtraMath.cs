@@ -6,6 +6,37 @@ public static class ExtraMath
 {
     public const double TOLERANCE = 10e-15;
 
+
+    public static bool IsPrime(this long number)
+    {
+        if (number < 2)
+            return false;
+        return number.AllPrimeFactors().Count == 1;
+    }
+
+    public static IReadOnlyList<long> AllPrimeFactors(this long number)
+    {
+        if (number < 1)
+            throw new InvalidOperationException("Negative numbers are not allowed for prime factorization");
+
+        var primes = new List<long>();
+
+        var maxFactor = Math.Sqrt(number);
+        for (int div = 2; div <= maxFactor; div++)
+        {
+            while (number % div == 0)
+            {
+                primes.Add(div);
+                number /= div;
+            }
+        }
+
+        if (number > 2)
+            primes.Add(number);
+        return primes;
+    }
+
+
     /// <summary>
     /// Greatest common divisor
     /// </summary>

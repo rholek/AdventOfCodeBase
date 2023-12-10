@@ -10,24 +10,42 @@ public static class DirectionExtensions
     {
         return d switch
         {
-            Direction.North => Direction.South,
-            Direction.South => Direction.North,
-            Direction.West => Direction.East,
-            Direction.East => Direction.West,
-            Direction.NorthEast => Direction.SouthWest,
-            Direction.SouthEast => Direction.NorthWest,
-            Direction.SouthWest => Direction.NorthEast,
-            Direction.NorthWest => Direction.SouthEast,
+            Direction.Up => Direction.Down,
+            Direction.Down => Direction.Up,
+            Direction.Left => Direction.Right,
+            Direction.Right => Direction.Left,
+            Direction.UpRight => Direction.DownLeft,
+            Direction.DownRight => Direction.UpLeft,
+            Direction.DownLeft => Direction.UpRight,
+            Direction.UpLeft => Direction.DownRight,
             _ => throw new ArgumentOutOfRangeException(nameof(d), d, null)
         };
     }
 
     public static Direction RotateRight(this Direction d, int degrees)
     {
+        if (degrees < 0)
+            throw new ArgumentException("Degrees must be > 0°.");
         if (degrees % 45 != 0)
             throw new ArgumentException("Degrees must be set in 45° intervals.");
 
-        return (Direction)(((int)d + (degrees / 45)) % 8);
+        for (int i = 0; i < degrees / 45; i++)
+        {
+            d = d switch
+            {
+                Direction.Up => Direction.UpRight,
+                Direction.UpRight => Direction.Right,
+                Direction.Right => Direction.DownRight,
+                Direction.DownRight => Direction.Down,
+                Direction.Down => Direction.DownLeft,
+                Direction.DownLeft => Direction.Left,
+                Direction.Left => Direction.UpLeft,
+                Direction.UpLeft => Direction.Up,
+                _ => throw new ArgumentOutOfRangeException(nameof(d), d, null)
+            };
+        }
+
+        return d;
     }
 
     public static Direction RotateLeft(this Direction d, int degrees)
@@ -39,21 +57,21 @@ public static class DirectionExtensions
     {
         switch (d)
         {
-            case Direction.North:
+            case Direction.Up:
                 return (position.col, position.row - 1);
-            case Direction.South:
+            case Direction.Down:
                 return (position.col, position.row + 1);
-            case Direction.West:
+            case Direction.Left:
                 return (position.col - 1, position.row);
-            case Direction.East:
+            case Direction.Right:
                 return (position.col + 1, position.row);
-            case Direction.NorthEast:
+            case Direction.UpRight:
                 return (position.col + 1, position.row - 1);
-            case Direction.NorthWest:
+            case Direction.UpLeft:
                 return (position.col - 1, position.row - 1);
-            case Direction.SouthEast:
+            case Direction.DownRight:
                 return (position.col + 1, position.row + 1);
-            case Direction.SouthWest:
+            case Direction.DownLeft:
                 return (position.col - 1, position.row + 1);
             default:
                 throw new ArgumentOutOfRangeException(nameof(d), d, null);
@@ -84,7 +102,7 @@ public static class DirectionExtensions
 
     public static IEnumerable<(int col, int row)> GetAdjacentWithoutDiagonal(this (int col, int row) p)
     {
-        return GetAdjacent(p, Direction.North, Direction.East, Direction.South, Direction.West);
+        return GetAdjacent(p, Direction.Up, Direction.Right, Direction.Down, Direction.Left);
     }
 
     public static IEnumerable<(int col, int row)> InMap<T>(this IEnumerable<(int col, int row)> p, Map<T> map)
@@ -115,4 +133,4 @@ public static class DirectionExtensions
                 yield return (c, r);
         }
     }
- }
+}
