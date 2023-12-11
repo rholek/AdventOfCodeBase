@@ -148,47 +148,6 @@ public static class Extensions
             .ToList();
     }
 
-    public static double Median(this IEnumerable<int> data)
-    {
-        return Median(data.Select(x => (long)x));
-    }
-
-    public static double Median(this IEnumerable<long> data)
-    {
-        var array = data.OrderBy(x => x).ToArray();
-        var n = array.Length;
-
-        double median;
-
-        var isOdd = n % 2 != 0;
-        if (isOdd)
-        {
-            median = array[(n + 1) / 2 - 1];
-        }
-        else
-        {
-            median = (array[n / 2 - 1] + array[n / 2]) / 2.0d;
-        }
-
-        return median;
-    }
-
-
-    public static int Abs(this int input)
-    {
-        return Math.Abs(input);
-    }
-
-    public static long Abs(this long input)
-    {
-        return Math.Abs(input);
-    }
-
-    public static double Abs(this double input)
-    {
-        return Math.Abs(input);
-    }
-
     /// <summary>
     /// Returns collection, that contains items in all given collections
     /// </summary>
@@ -261,10 +220,8 @@ public static class Extensions
         var result = first.ToDictionary(x => x.Key, x => x.Value);
         foreach (var (key, value) in second)
         {
-            if (result.ContainsKey(key))
+            if (!result.TryAdd(key, value))
                 result[key] = aggregateFunc(result[key], value);
-            else
-                result[key] = value;
         }
 
         return result;
@@ -280,6 +237,7 @@ public static class Extensions
     {
         return string.Join(separator, items);
     }
+
     public static string ConcatIntoString(this IEnumerable<string> items)
     {
         return string.Join(string.Empty, items);

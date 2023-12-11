@@ -1,11 +1,55 @@
-﻿// ReSharper disable InconsistentNaming
-
-namespace AdventOfCode;
+﻿namespace AdventOfCode;
 
 public static class ExtraMath
 {
+    #region Constants
+    
     public const double TOLERANCE = 10e-15;
 
+    #endregion
+
+    #region Extensions
+  
+    public static double Median(this IEnumerable<int> data)
+    {
+        return Median(data.Select(x => (long)x));
+    }
+
+    public static double Median(this IEnumerable<long> data)
+    {
+        var array = data.OrderBy(x => x).ToArray();
+        var n = array.Length;
+
+        double median;
+
+        var isOdd = n % 2 != 0;
+        if (isOdd)
+        {
+            median = array[(n + 1) / 2 - 1];
+        }
+        else
+        {
+            median = (array[n / 2 - 1] + array[n / 2]) / 2.0d;
+        }
+
+        return median;
+    }
+
+
+    public static int Abs(this int input)
+    {
+        return Math.Abs(input);
+    }
+
+    public static long Abs(this long input)
+    {
+        return Math.Abs(input);
+    }
+
+    public static double Abs(this double input)
+    {
+        return Math.Abs(input);
+    }
 
     public static bool IsPrime(this long number)
     {
@@ -36,6 +80,9 @@ public static class ExtraMath
         return primes;
     }
 
+    #endregion
+    
+    #region Extra method
 
     /// <summary>
     /// Greatest common divisor
@@ -82,8 +129,6 @@ public static class ExtraMath
         return from f in first from s in second select f.Concat(s).ToList();
     }
 
-
-
     /// <summary>
     /// Calculates modular inverse
     /// </summary>
@@ -114,7 +159,9 @@ public static class ExtraMath
         return startValue * (1 - Math.Pow(distance, count + 1)) / (1 - distance);
     }
 
-
     public static int ModuloPositive(int x, int mod) => ((x % mod) + mod) % mod;
-    public static long ModuloPositive(long x, long mod) => ((x % mod) + mod) % mod;
+
+    public static long ModuloPositive(long x, long mod) => ((x % mod) + mod) % mod; 
+
+    #endregion
 }

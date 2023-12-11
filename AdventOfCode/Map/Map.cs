@@ -55,6 +55,11 @@ public class Map<T> : IDictionary<(int column, int row), T>
     /// </summary>
     public Rectangle CalculateArea() => new Rectangle(this.Min(x => x.Key.column), this.Min(x => x.Key.row), Width, Height);
 
+    public IEnumerable<T> GetColumn(int index) => this.Where(x => x.Key.column == index).Select(x => x.Value);
+
+    public IEnumerable<T> GetRow(int index) => this.Where(x => x.Key.row == index).Select(x => x.Value);
+
+
     public T this[(int column, int row) key]
     {
         get

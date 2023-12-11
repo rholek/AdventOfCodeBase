@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace AdventOfCode.Map;
+﻿namespace AdventOfCode.Map;
 
 public static class DirectionExtensions
 {
@@ -53,81 +51,81 @@ public static class DirectionExtensions
         return d.RotateRight(360 - (degrees % 360));
     }
 
-    public static (int col, int row) Move(this Direction d, (int col, int row) position)
+    public static Point2D Move(this Direction d, Point2D position)
     {
         switch (d)
         {
             case Direction.Up:
-                return (position.col, position.row - 1);
+                return (position.column, position.row - 1);
             case Direction.Down:
-                return (position.col, position.row + 1);
+                return (position.column, position.row + 1);
             case Direction.Left:
-                return (position.col - 1, position.row);
+                return (position.column - 1, position.row);
             case Direction.Right:
-                return (position.col + 1, position.row);
+                return (position.column + 1, position.row);
             case Direction.UpRight:
-                return (position.col + 1, position.row - 1);
+                return (position.column + 1, position.row - 1);
             case Direction.UpLeft:
-                return (position.col - 1, position.row - 1);
+                return (position.column - 1, position.row - 1);
             case Direction.DownRight:
-                return (position.col + 1, position.row + 1);
+                return (position.column + 1, position.row + 1);
             case Direction.DownLeft:
-                return (position.col - 1, position.row + 1);
+                return (position.column - 1, position.row + 1);
             default:
                 throw new ArgumentOutOfRangeException(nameof(d), d, null);
         }
     }
 
-    public static (int col, int row) Move(this (int col, int row) position, Direction d)
+    public static Point2D Move(this Point2D position, Direction d)
     {
         return d.Move(position);
     }
 
-    public static (int col, int row) Move(this (int col, int row) position, Direction d, int steps)
+    public static Point2D Move(this Point2D position, Direction d, int steps)
     {
         for (int i = 0; i < steps; i++)
             position = d.Move(position);
         return position;
     }
 
-    public static IEnumerable<(int col, int row)> GetAdjacent(this (int col, int row) p)
+    public static IEnumerable<Point2D> GetAdjacent(this Point2D p)
     {
         return AllDirections.Select(direction => p.Move(direction));
     }
 
-    public static IEnumerable<(int col, int row)> GetAdjacent(this (int col, int row) p, params Direction[] directions)
+    public static IEnumerable<Point2D> GetAdjacent(this Point2D p, params Direction[] directions)
     {
         return directions.Select(direction => p.Move(direction));
     }
 
-    public static IEnumerable<(int col, int row)> GetAdjacentWithoutDiagonal(this (int col, int row) p)
+    public static IEnumerable<Point2D> GetAdjacentWithoutDiagonal(this Point2D p)
     {
         return GetAdjacent(p, Direction.Up, Direction.Right, Direction.Down, Direction.Left);
     }
 
-    public static IEnumerable<(int col, int row)> InMap<T>(this IEnumerable<(int col, int row)> p, Map<T> map)
+    public static IEnumerable<Point2D> InMap<T>(this IEnumerable<Point2D> p, Map<T> map)
     {
         return p.Where(map.ContainsKey);
     }
 
-    public static (int col, int row) Offset(this (int col, int row) source, (int col, int row) offset)
+    public static Point2D Offset(this Point2D source, Point2D offset)
     {
-        return (source.col + offset.col, source.row + offset.row);
+        return (source.column + offset.column, source.row + offset.row);
     }
 
-    public static (int col, int row) Offset(this (int col, int row) source, int x, int y)
+    public static Point2D Offset(this Point2D source, int x, int y)
     {
         return Offset(source, (x, y));
     }
 
-    public static int ManhattanDistance(this (int col, int row) point, (int col, int row) other)
+    public static int ManhattanDistance(this Point2D point, Point2D other)
     {
-        return Math.Abs(point.col - other.col) + Math.Abs(point.row - other.row);
+        return Math.Abs(point.column - other.column) + Math.Abs(point.row - other.row);
     }
 
-    public static IEnumerable<(int col, int row)> BetweenInclusive(this (int col, int row) pointFrom, (int col, int row) pointTo)
+    public static IEnumerable<Point2D> BetweenInclusive(this Point2D pointFrom, Point2D pointTo)
     {
-        for (int c = Math.Min(pointFrom.col, pointTo.col); c <= Math.Max(pointFrom.col, pointTo.col); c++)
+        for (int c = Math.Min(pointFrom.column, pointTo.column); c <= Math.Max(pointFrom.column, pointTo.column); c++)
         {
             for (int r = Math.Min(pointFrom.row, pointTo.row); r <= Math.Max(pointFrom.row, pointTo.row); r++)
                 yield return (c, r);
