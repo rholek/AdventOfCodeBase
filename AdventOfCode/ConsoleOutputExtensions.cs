@@ -65,17 +65,19 @@ public static class ConsoleOutputExtensions
 
     }
 
-    public static T Part1<T>(this T o)
+    public static T Part1<T>(this T o, bool print = false)
     {
         ResultHolder.Part1 = o.ToString();
-        Console.WriteLine("Part 1: " + o);
+        if (print)
+            Console.WriteLine("Part 1: " + o);
         return o;
     }
 
-    public static T Part2<T>(this T o)
+    public static T Part2<T>(this T o, bool print = false)
     {
         ResultHolder.Part2 = o.ToString();
-        Console.WriteLine("Part 2: " + o);
+        if (print)
+            Console.WriteLine("Part 2: " + o);
         return o;
     }
 

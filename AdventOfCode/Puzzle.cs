@@ -19,10 +19,29 @@ public abstract class Puzzle
         var day = GetType().Name.Replace("Day", "").AsInt();
         var inputLoader = new AdventOfCodeData(day);
 
+
+        foreach (var manualTestDataAttribute in GetType().GetCustomAttributes().OfType<ManualTestDataAttribute>())
+        {
+            "Running with test data".Dump(ConsoleColor.Blue);
+            "-----------------------------------------------------".Dump(ConsoleColor.DarkGray);
+
+            using var _ = ResultHolder.Begin();
+            RunInternal(new Input(() => manualTestDataAttribute.Input));
+            if (!manualTestDataAttribute.Part1Result.IsNullOrEmpty() && ResultHolder.Part1Set && !inputLoader.Answers.CheckTestResult(ResultHolder.Part1, 1))
+                return;
+            if (!manualTestDataAttribute.Part2Result.IsNullOrEmpty() && ResultHolder.Part2Set && !inputLoader.Answers.CheckTestResult(ResultHolder.Part2, 2))
+                return;
+
+            Console.WriteLine();
+            "-----------------------------------------------------".Dump(ConsoleColor.DarkGray);
+            $"{GetType().Name} (test data) run for {stopwatch.ElapsedMilliseconds}ms.".Dump(ConsoleColor.DarkGray);
+        }
+
+
         "Running with test data".Dump(ConsoleColor.Blue);
         "-----------------------------------------------------".Dump(ConsoleColor.DarkGray);
 
-        var runTestData = !GetType().GetCustomAttributes().OfType<SkipTestDataAttribute>().Any();
+        var runTestData = !GetType().GetCustomAttributes().OfType<SkipDownloadedTestDataAttribute>().Any();
         if (runTestData)
         {
             using var _ = ResultHolder.Begin();
@@ -34,7 +53,7 @@ public abstract class Puzzle
         }
         else
         {
-            "Test data skipped (SkipTestData attribute found)!".Dump(ConsoleColor.DarkYellow);
+            "Downloaded test data skipped (SkipTestData attribute found)!".Dump(ConsoleColor.DarkYellow);
         }
 
         Console.WriteLine();

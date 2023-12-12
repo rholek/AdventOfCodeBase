@@ -185,7 +185,7 @@ public static class Extensions
         return original.Where(x => !Equals(x, remove));
     }
 
-    public static bool IsNullOrEmpty(this string s)
+    public static bool IsNullOrEmpty(this string? s)
     {
         // ReSharper disable once StringNullOrEmptyExtensionCall
         return string.IsNullOrEmpty(s);

@@ -1,4 +1,4 @@
 ﻿namespace AdventOfCode.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class SkipTestDataAttribute : Attribute { }
+public class SkipDownloadedTestDataAttribute : Attribute { }
