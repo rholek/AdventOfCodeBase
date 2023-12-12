@@ -12,8 +12,9 @@ public class Map<T> : IDictionary<(int column, int row), T>
         dictionaryImplementation = new Dictionary<(int column, int row), T>(data);
     }
 
-    public Map(IList<string> data)
+    public Map(IEnumerable<string> rows)
     {
+        var data = rows.ToList();
         dictionaryImplementation = new Dictionary<(int column, int row), T>();
         for (int i = 0; i < data.Count; i++)
             for (int j = 0; j < data[i].Length; j++)
@@ -58,6 +59,39 @@ public class Map<T> : IDictionary<(int column, int row), T>
     public IEnumerable<T> GetColumn(int index) => this.Where(x => x.Key.column == index).Select(x => x.Value);
 
     public IEnumerable<T> GetRow(int index) => this.Where(x => x.Key.row == index).Select(x => x.Value);
+
+
+    public void ShiftColumn(int columnIndex, int step)
+    {
+        var pointsToShift = step switch
+        {
+            0 => [],
+            < 0 => this.OrderBy(x => x.Key.column).Where(x => x.Key.column <= columnIndex),
+            > 0 => this.OrderByDescending(x => x.Key.column).Where(x => x.Key.column >= columnIndex)
+        };
+
+        foreach (var ((column, row), T) in pointsToShift)
+        {
+            Add((column + step, row), T);
+            Remove((column, row));
+        }
+    }
+
+    public void ShiftRow(int rowIndex, int step)
+    {
+        var pointsToShift = step switch
+        {
+            0 => [],
+            < 0 => this.OrderBy(x => x.Key.row).Where(x => x.Key.row <= rowIndex),
+            > 0 => this.OrderByDescending(x => x.Key.row).Where(x => x.Key.row >= rowIndex)
+        };
+
+        foreach (var ((column, row), T) in pointsToShift)
+        {
+            Add((column, row + step), T);
+            Remove((column, row));
+        }
+    }
 
 
     public T this[(int column, int row) key]

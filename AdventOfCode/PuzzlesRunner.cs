@@ -29,6 +29,22 @@ public static class PuzzlesRunner
         }
     }
 
+    public static IEnumerable<Puzzle> FromArgs(string[] args)
+    {
+        if (args.Contains("-today"))
+            return [Today];
+        if (args.Contains("-all"))
+        {
+            if (Year > DateTime.Now.Year)
+                return [];
+            if (Year == DateTime.Now.Year && DateTime.Now.Month == 12)
+                return Enumerable.Range(1, DateTime.Now.Day).Select(GetPuzzle);
+            return AllPuzzles;
+        }
+
+        return [];
+    }
+
     public static Puzzle Day01 => GetPuzzle(1);
     public static Puzzle Day02 => GetPuzzle(2);
     public static Puzzle Day03 => GetPuzzle(3);

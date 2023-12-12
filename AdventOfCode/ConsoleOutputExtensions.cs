@@ -84,7 +84,20 @@ public static class ConsoleOutputExtensions
         PrintDictionary(data, x => x?.ToString() ?? string.Empty);
     }
 
+    public static string PrintToString<T>(this IDictionary<(int x, int y), T> data, string emptySpace = " ")
+    {
+        var sb = new StringWriter();
+        PrintDictionary(data, x => x?.ToString() ?? string.Empty, sb, emptySpace);
+        return sb.ToString();
+    }
+
+
     public static void PrintDictionary<T>(this IDictionary<(int x, int y), T> data, Func<T, string> selector, string emptySpace = " ")
+    {
+        PrintDictionary(data, selector, Console.Out, emptySpace);
+    }
+
+    public static void PrintDictionary<T>(this IDictionary<(int x, int y), T> data, Func<T, string> selector, TextWriter textWriter, string emptySpace = " ")
     {
         if (!data.Any())
             return;
@@ -110,8 +123,8 @@ public static class ConsoleOutputExtensions
         for (int i = 0; i < print.GetLength(0); i++)
         {
             for (int j = 0; j < print.GetLength(1); j++)
-                Console.Write(print[i, j]);
-            Console.WriteLine();
+                textWriter.Write(print[i, j]);
+            textWriter.WriteLine();
         }
     }
 

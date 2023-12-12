@@ -26,13 +26,6 @@ public static class Extensions
         return o.As<long>();
     }
 
-    public static long ParseAsLong(this object o)
-    {
-        if (o is char c)
-            return long.Parse(c.ToString());
-        return o.As<long>();
-    }
-
     public static decimal AsDecimal(this object o)
     {
         return o.As<decimal>();
@@ -45,6 +38,10 @@ public static class Extensions
 
     public static T As<T>(this object o)
     {
+        //char when converted into number uses code instead of value
+        if (o is char c)
+            o = c.ToString();
+
         return o is null
             ? default
             : (T)Convert.ChangeType(o, Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T));
@@ -209,6 +206,11 @@ public static class Extensions
         }
     }
 
+    public static IEnumerable<int> FindAllIndexes<T>(this IEnumerable<T> source, T item)
+    {
+        return source.Select((x, i) => (x, i)).Where(x => Equals(x.x, item)).Select(x => x.i);
+    }
+
     public static IEnumerable<int> IndexOfAll(this string sourceString, string subString)
     {
         return Regex.Matches(sourceString, subString).Cast<Match>().Select(m => m.Index);
@@ -251,4 +253,13 @@ public static class Extensions
     public static IEnumerable<string> SplitByLine(this string input) => input.Split(Environment.NewLine);
 
     public static IEnumerable<string> SplitByDoubleLine(this string input) => input.Split($"{Environment.NewLine}{Environment.NewLine}");
+
+
+    public static string ReplaceAt(this string input, int index, char c)
+    {
+        var cc = input.ToCharArray();
+        cc[index] = c;
+        return new string(cc);
+
+    }
 }
