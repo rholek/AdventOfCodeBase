@@ -235,7 +235,12 @@ public static class Extensions
             hashset.Add(item);
     }
 
-    public static string Join<T>(this IEnumerable<T> items, string separator = ",")
+    public static string Join<T>(this IEnumerable<T> items)
+    {
+        return string.Join("", items);
+    }
+
+    public static string Join<T>(this IEnumerable<T> items, string separator)
     {
         return string.Join(separator, items);
     }
