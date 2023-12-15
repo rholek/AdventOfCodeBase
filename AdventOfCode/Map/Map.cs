@@ -153,6 +153,21 @@ public class Map<T> : IDictionary<(int column, int row), T>
         return dictionaryImplementation.Remove(item);
     }
 
+    public bool Remove(T item)
+    {
+        var toRemove = this.Where(x => Equals(item, x.Value)).Select(x => x.Key).ToList();
+        toRemove.ForEach(x => dictionaryImplementation.Remove(x));
+        return toRemove.Count > 0;
+    }
+
+    public Point2D GetSinglePosition(T item)
+    {
+        var items = this.Where(x => Equals(x.Value, item)).ToList();
+        if (items.Count != 1)
+            throw new InvalidOperationException($"Found {items.Count} items instead of 1 item");
+        return items[0].Key;
+    }
+
     public int Count => dictionaryImplementation.Count;
 
     public bool IsReadOnly => dictionaryImplementation.IsReadOnly;

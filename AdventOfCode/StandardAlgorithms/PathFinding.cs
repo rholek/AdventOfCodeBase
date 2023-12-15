@@ -76,16 +76,14 @@ public class PathFinding<T> where T : notnull
 
         bestPath = new Dictionary<T, T>();
 
-        var processed = new HashSet<T>();
-        while (minCosts.Any())
-        {
-            var minimalCost = minCosts
-                .Where(x => !processed.Contains(x.Key))
-                .OrderBy(x => x.Value)
-                .Select(x => x.Key)
-                .First();
+        var queue = new PriorityQueue<T, long>();
+        queue.Enqueue(startPoint, 0);
 
-            processed.Add(minimalCost);
+        var processed = new HashSet<T>();
+        while (queue.TryDequeue(out var minimalCost, out _))
+        {
+            if (!processed.Add(minimalCost))
+                continue;
 
             foreach (var p in reachableFunction(minimalCost))
             {
@@ -98,6 +96,7 @@ public class PathFinding<T> where T : notnull
                 {
                     minCosts[p] = cost;
                     bestPath[p] = minimalCost;
+                    queue.Enqueue(p, cost);
                 }
 
                 if (!endReached(p))
@@ -107,14 +106,9 @@ public class PathFinding<T> where T : notnull
 
                 return true;
             }
-
-            minCosts.Remove(minimalCost);
         }
 
         totalCost = long.MaxValue;
         return false;
     }
-
-
-
 }
