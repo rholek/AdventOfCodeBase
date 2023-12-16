@@ -3,19 +3,19 @@ using System.Drawing;
 
 namespace AdventOfCode.Map;
 
-public class Map<T> : IDictionary<(int column, int row), T>
+public class Map<T> : IDictionary<Point2D, T>
 {
-    private readonly IDictionary<(int column, int row), T> dictionaryImplementation;
+    private readonly IDictionary<Point2D, T> dictionaryImplementation;
 
-    public Map(IDictionary<(int column, int row), T> data)
+    public Map(IDictionary<Point2D, T> data)
     {
-        dictionaryImplementation = new Dictionary<(int column, int row), T>(data);
+        dictionaryImplementation = new Dictionary<Point2D, T>(data);
     }
 
     public Map(IEnumerable<string> rows)
     {
         var data = rows.ToList();
-        dictionaryImplementation = new Dictionary<(int column, int row), T>();
+        dictionaryImplementation = new Dictionary<Point2D, T>();
         for (int i = 0; i < data.Count; i++)
             for (int j = 0; j < data[i].Length; j++)
                 this[(j, i)] = data[i][j].ToString().As<T>();
@@ -94,7 +94,7 @@ public class Map<T> : IDictionary<(int column, int row), T>
     }
 
 
-    public T this[(int column, int row) key]
+    public T this[Point2D key]
     {
         get
         {
@@ -118,7 +118,7 @@ public class Map<T> : IDictionary<(int column, int row), T>
 
     #region Other dictionary members
 
-    public IEnumerator<KeyValuePair<(int column, int row), T>> GetEnumerator()
+    public IEnumerator<KeyValuePair<Point2D, T>> GetEnumerator()
     {
         return dictionaryImplementation.GetEnumerator();
     }
@@ -128,7 +128,7 @@ public class Map<T> : IDictionary<(int column, int row), T>
         return ((IEnumerable)dictionaryImplementation).GetEnumerator();
     }
 
-    public void Add(KeyValuePair<(int column, int row), T> item)
+    public void Add(KeyValuePair<Point2D, T> item)
     {
         dictionaryImplementation.Add(item);
     }
@@ -138,17 +138,17 @@ public class Map<T> : IDictionary<(int column, int row), T>
         dictionaryImplementation.Clear();
     }
 
-    public bool Contains(KeyValuePair<(int column, int row), T> item)
+    public bool Contains(KeyValuePair<Point2D, T> item)
     {
         return dictionaryImplementation.Contains(item);
     }
 
-    public void CopyTo(KeyValuePair<(int column, int row), T>[] array, int arrayIndex)
+    public void CopyTo(KeyValuePair<Point2D, T>[] array, int arrayIndex)
     {
         dictionaryImplementation.CopyTo(array, arrayIndex);
     }
 
-    public bool Remove(KeyValuePair<(int column, int row), T> item)
+    public bool Remove(KeyValuePair<Point2D, T> item)
     {
         return dictionaryImplementation.Remove(item);
     }
@@ -172,27 +172,27 @@ public class Map<T> : IDictionary<(int column, int row), T>
 
     public bool IsReadOnly => dictionaryImplementation.IsReadOnly;
 
-    public void Add((int column, int row) key, T value)
+    public void Add(Point2D key, T value)
     {
         dictionaryImplementation.Add(key, value);
     }
 
-    public bool ContainsKey((int column, int row) key)
+    public bool ContainsKey(Point2D key)
     {
         return dictionaryImplementation.ContainsKey(key);
     }
 
-    public bool Remove((int column, int row) key)
+    public bool Remove(Point2D key)
     {
         return dictionaryImplementation.Remove(key);
     }
 
-    public bool TryGetValue((int column, int row) key, out T value)
+    public bool TryGetValue(Point2D key, out T value)
     {
         return dictionaryImplementation.TryGetValue(key, out value);
     }
 
-    public ICollection<(int column, int row)> Keys => dictionaryImplementation.Keys;
+    public ICollection<Point2D> Keys => dictionaryImplementation.Keys;
 
     public ICollection<T> Values => dictionaryImplementation.Values;
 

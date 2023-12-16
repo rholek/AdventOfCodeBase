@@ -2,12 +2,6 @@
 
 public static class MapExtensions
 {
-
-    public static List<(int column, int row)> EmptyList => new();
-
-    public static HashSet<(int column, int row)> EmptyHashSet => new();
-
-
     public static Map<T> FlipVertically<T>(this Map<T> data)
     {
         var height = data.Height();

@@ -21,13 +21,13 @@ public class AnswerChecker
         if (expected == answer)
         {
             $"""
-                 Test result '{answer}' for part {level} is correct;
+                 Test result '{answer}' for part {level} is correct
                  """.Dump(ConsoleColor.Green);
         }
         else
         {
             return $"""
-                 Test input for part {level} is incorrect;
+                 Test input for part {level} is incorrect
                  Expected: {expected}
                  Actual: {answer}
                  Should continue?
