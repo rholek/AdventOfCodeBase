@@ -15,9 +15,9 @@ public class AnswerChecker
         filePath = Path.Combine(tmpFolder, "answers.json");
     }
 
-    public bool CheckTestResult(string answer, int level)
+    public bool CheckTestResult(string answer, int level, string? expectedAnswer = null)
     {
-        var expected = LoadExpectedTestResult(level);
+        var expected = expectedAnswer ?? LoadExpectedTestResult(level);
         if (expected == answer)
         {
             $"""
@@ -90,7 +90,7 @@ public class AnswerChecker
                 "Wait before answering".Dump(ConsoleColor.Yellow);
                 responseText.Dump(ConsoleColor.Yellow);
 
-                var match = Regex.Match(responseText, @"You have( (?<minutes>\d+)m )?( (?<seconds>\d+)s )?left to wait");
+                var match = Regex.Match(responseText, @"You have ((?<minutes>\d+)m )?((?<seconds>\d+)s )?left to wait");
                 if (match.Success)
                 {
                     var minutes = match.Groups["minutes"].Value.IsNullOrEmpty() ? 0 : match.Groups["minutes"].Value.AsInt();

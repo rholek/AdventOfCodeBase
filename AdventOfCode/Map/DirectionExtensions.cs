@@ -3,6 +3,7 @@
 public static class DirectionExtensions
 {
     public static readonly IReadOnlyCollection<Direction> AllDirections = Enum.GetValues(typeof(Direction)).Cast<Direction>().ToList();
+    public static readonly IReadOnlyCollection<Direction> MainDirections = [Direction.Up, Direction.Right, Direction.Down, Direction.Left];
 
     public static Direction GetOpposite(this Direction d)
     {

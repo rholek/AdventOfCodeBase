@@ -27,9 +27,9 @@ public abstract class Puzzle
 
             using var _ = ResultHolder.Begin();
             RunInternal(new Input(() => manualTestDataAttribute.Input));
-            if (!manualTestDataAttribute.Part1Result.IsNullOrEmpty() && ResultHolder.Part1Set && !inputLoader.Answers.CheckTestResult(ResultHolder.Part1, 1))
+            if (!manualTestDataAttribute.Part1Result.IsNullOrEmpty() && ResultHolder.Part1Set && !inputLoader.Answers.CheckTestResult(ResultHolder.Part1, 1, manualTestDataAttribute.Part1Result))
                 return;
-            if (!manualTestDataAttribute.Part2Result.IsNullOrEmpty() && ResultHolder.Part2Set && !inputLoader.Answers.CheckTestResult(ResultHolder.Part2, 2))
+            if (!manualTestDataAttribute.Part2Result.IsNullOrEmpty() && ResultHolder.Part2Set && !inputLoader.Answers.CheckTestResult(ResultHolder.Part2, 2, manualTestDataAttribute.Part2Result))
                 return;
 
             Console.WriteLine();
