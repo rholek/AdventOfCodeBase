@@ -52,26 +52,26 @@ public static class DirectionExtensions
         return d.RotateRight(360 - (degrees % 360));
     }
 
-    public static Point2D Move(this Direction d, Point2D position)
+    public static Point2D Move(this Direction d, Point2D position, int steps)
     {
         switch (d)
         {
             case Direction.Up:
-                return (position.column, position.row - 1);
+                return (position.column, position.row - steps);
             case Direction.Down:
-                return (position.column, position.row + 1);
+                return (position.column, position.row + steps);
             case Direction.Left:
-                return (position.column - 1, position.row);
+                return (position.column - steps, position.row);
             case Direction.Right:
-                return (position.column + 1, position.row);
+                return (position.column + steps, position.row);
             case Direction.UpRight:
-                return (position.column + 1, position.row - 1);
+                return (position.column + steps, position.row - steps);
             case Direction.UpLeft:
-                return (position.column - 1, position.row - 1);
+                return (position.column - steps, position.row - steps);
             case Direction.DownRight:
-                return (position.column + 1, position.row + 1);
+                return (position.column + steps, position.row + steps);
             case Direction.DownLeft:
-                return (position.column - 1, position.row + 1);
+                return (position.column - steps, position.row + steps);
             default:
                 throw new ArgumentOutOfRangeException(nameof(d), d, null);
         }
@@ -79,14 +79,12 @@ public static class DirectionExtensions
 
     public static Point2D Move(this Point2D position, Direction d)
     {
-        return d.Move(position);
+        return d.Move(position, 1);
     }
 
     public static Point2D Move(this Point2D position, Direction d, int steps)
     {
-        for (int i = 0; i < steps; i++)
-            position = d.Move(position);
-        return position;
+        return d.Move(position, steps);
     }
 
     public static IEnumerable<Point2D> GetAdjacent(this Point2D p)
@@ -139,7 +137,7 @@ public static class DirectionExtensions
         var columnDiff = to.column - from.column;
         if (rowDiff != 0 && columnDiff != 0 && columnDiff.Abs() != rowDiff.Abs())
             throw new InvalidOperationException("Cannot detect direction, not 45°");
-        
+
         if (rowDiff == 0)
             return columnDiff > 0 ? Direction.Right : Direction.Left;
 
