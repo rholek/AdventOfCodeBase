@@ -33,6 +33,11 @@ public static class PuzzlesRunner
     {
         if (args.Contains("-today"))
             return [Today];
+        if (args.Contains("-day"))
+        {
+            var day = args[args.ToList().IndexOf("-day") + 1].AsInt();
+            return [GetPuzzle(day)];
+        }
         if (args.Contains("-all"))
         {
             if (Year > DateTime.Now.Year)

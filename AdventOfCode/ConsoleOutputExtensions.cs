@@ -99,6 +99,26 @@ public static class ConsoleOutputExtensions
         PrintDictionary(data, selector, Console.Out, emptySpace);
     }
 
+
+    public static void PrintDictionaryToTempFile(this IDictionary<(int x, int y), string> data, string emptySpace = " ")
+    {
+        PrintDictionaryToTempFile(data, x => x, emptySpace);
+    }
+
+    public static void PrintDictionaryToTempFile<T>(this IDictionary<(int x, int y), T> data, Func<T, string> selector, string emptySpace = " ")
+    {
+        var path = Path.ChangeExtension(Path.GetTempFileName(), "txt");
+        PrintDictionaryToFile(data, selector, path, emptySpace);
+        $"Printed to {path}".Dump();
+    }
+
+    public static void PrintDictionaryToFile<T>(this IDictionary<(int x, int y), T> data, Func<T, string> selector, string path, string emptySpace = " ")
+    {
+        using var fileStream = File.Create(path);
+        using var writer = new StreamWriter(fileStream);
+        PrintDictionary(data, selector, writer, emptySpace);
+    }
+
     public static void PrintDictionary<T>(this IDictionary<(int x, int y), T> data, Func<T, string> selector, TextWriter textWriter, string emptySpace = " ")
     {
         if (!data.Any())
