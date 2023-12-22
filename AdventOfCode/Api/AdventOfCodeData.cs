@@ -1,5 +1,4 @@
-﻿using AdventOfCode.Utils;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 
 namespace AdventOfCode.Api;
 
@@ -7,7 +6,6 @@ public class AdventOfCodeData
 {
     #region Fields
 
-    private readonly int day;
     private readonly AdventOfCodeWebsite website;
     private readonly string tmpFolder;
 
@@ -17,7 +15,6 @@ public class AdventOfCodeData
 
     public AdventOfCodeData(int day)
     {
-        this.day = day;
         var session = File.ReadAllText("SessionToken.txt");
         website = new AdventOfCodeWebsite(day, session);
 
@@ -38,18 +35,6 @@ public class AdventOfCodeData
     {
         get
         {
-            //load from file in exists
-            string inputFilePath = $"Inputs\\Day{day.ToString().PadLeft(2, '0')}.txt";
-            if (File.Exists(inputFilePath))
-            {
-                var allText = File.ReadAllText(inputFilePath);
-                if (allText.Length > 0)
-                {
-                    var testInput = allText.TrimEnd(Environment.NewLine.ToCharArray());
-                    return new Input(() => testInput, () => testInput);
-                }
-            }
-
             return new Input(() => GetFromCachedFile("TestInputPart1", GetPart1), () => GetFromCachedFile("TestInputPart2", GetPart2));
 
             string GetPart1()
