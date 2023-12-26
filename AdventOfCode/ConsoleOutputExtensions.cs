@@ -4,31 +4,32 @@ namespace AdventOfCode;
 
 public static class ConsoleOutputExtensions
 {
-    public static void Dump(this object o)
+    public static T Dump<T>(this T o)
     {
         if (o is string)
         {
             Console.WriteLine(o);
-            return;
+            return o;
         }
 
         if (o is IEnumerable enumerable)
         {
             foreach (var e in enumerable)
                 e.Dump();
-            return;
+            return o;
         }
 
         Console.WriteLine(o);
+        return o;
     }
 
-    public static void Dump(this object o, ConsoleColor color)
+    public static T Dump<T>(this T o, ConsoleColor color)
     {
         var originalColor = Console.ForegroundColor;
         try
         {
             Console.ForegroundColor = color;
-            Dump(o);
+            return Dump(o);
         }
         finally
         {

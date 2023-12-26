@@ -1,4 +1,5 @@
-﻿using HtmlAgilityPack;
+﻿using System.Text.Json;
+using HtmlAgilityPack;
 
 namespace AdventOfCode.Api;
 
@@ -18,7 +19,25 @@ public class AdventOfCodeData
         var session = File.ReadAllText("SessionToken.txt");
         website = new AdventOfCodeWebsite(day, session);
 
-        tmpFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"AdventOfCode{PuzzlesRunner.Year}", Cryptography.ComputeSha256Hash(session), day.ToString());
+        var rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), $"AdventOfCode{PuzzlesRunner.Year}");
+        if (!Directory.Exists(rootPath))
+            Directory.CreateDirectory(rootPath);
+        var tokenToUserIdJson = Path.Combine(rootPath, "tokenToUser.json");
+        if (!File.Exists(tokenToUserIdJson))
+            File.WriteAllText(tokenToUserIdJson, "{}");
+
+        var tokens = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText(tokenToUserIdJson)) ?? throw new InvalidOperationException();
+        var hash = Cryptography.ComputeSha256Hash(session);
+        if (!tokens.ContainsKey(hash))
+        {
+            var doc = new HtmlDocument();
+            doc.LoadHtml(website.Get(""));
+            tokens[hash] = doc.DocumentNode.SelectNodes("//div").First(x => x.HasClass("user")).GetDirectInnerText().Trim();
+            File.WriteAllText(tokenToUserIdJson, JsonSerializer.Serialize(tokens));
+        }
+
+        var userName = tokens[hash];
+        tmpFolder = Path.Combine(rootPath, userName, day.ToString());
         if (!Directory.Exists(tmpFolder))
             Directory.CreateDirectory(tmpFolder);
     }

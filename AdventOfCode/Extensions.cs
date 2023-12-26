@@ -175,6 +175,8 @@ public static class Extensions
         return dictionary.ToDictionary(x => x.Value, x => x.Key);
     }
 
+    public static IEnumerable<(T item, int index)> WithIndex<T>(this IEnumerable<T> collection) => collection.Select((x, i) => (x, i));
+
     /// <summary>
     /// Returns collection without specified item
     /// </summary>
@@ -190,7 +192,7 @@ public static class Extensions
         // ReSharper disable once StringNullOrEmptyExtensionCall
         return string.IsNullOrEmpty(s);
     }
-
+    
     public static bool IsNullOrWhiteSpace(this string s)
     {
         // ReSharper disable once StringNullOrEmptyExtensionCall
@@ -258,7 +260,6 @@ public static class Extensions
     public static IEnumerable<string> SplitByLine(this string input) => input.Split(Environment.NewLine);
 
     public static IEnumerable<string> SplitByDoubleLine(this string input) => input.Split($"{Environment.NewLine}{Environment.NewLine}");
-
 
     public static string ReplaceAt(this string input, int index, char c)
     {

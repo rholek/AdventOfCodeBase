@@ -42,8 +42,10 @@ public static class PuzzlesRunner
         {
             if (Year > DateTime.Now.Year)
                 return [];
+            if (DateTime.Now.Month < 12)
+                return [];
             if (Year == DateTime.Now.Year && DateTime.Now.Month == 12)
-                return Enumerable.Range(1, DateTime.Now.Day).Select(GetPuzzle);
+                return Enumerable.Range(1, Math.Min(DateTime.Now.Day, 25)).Select(GetPuzzle);
             return AllPuzzles;
         }
 
