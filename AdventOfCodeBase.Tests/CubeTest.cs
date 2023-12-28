@@ -28,7 +28,7 @@ public class CubeTest
         {
             var start = cubeString.Split("~")[0].Split(",").Select(x => x.AsInt()).ToList();
             var end = cubeString.Split("~")[1].Split(",").Select(x => x.AsInt()).ToList();
-            return new Cube(new MapPoint3D(start[0], start[1], start[2]), new MapPoint3D(end[0], end[1], end[2]));
+            return new Cube(new Point3D(start[0], start[1], start[2]), new Point3D(end[0], end[1], end[2]));
         }
     }
 }

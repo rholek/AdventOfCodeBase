@@ -6,7 +6,7 @@ public record Cube
     public int Depth { get; }
     public int Height { get; }
 
-    public MapPoint3D Origin { get; set; }
+    public Point3D Origin { get; set; }
 
     public int Left => Origin.X;
     public int Near => Origin.Y;
@@ -16,13 +16,13 @@ public record Cube
     public int Far => Origin.Y + Depth;
     public int Top => Origin.Z + Height;
 
-    public Cube(MapPoint3D start, MapPoint3D end)
+    public Cube(Point3D start, Point3D end)
     {
         Width = (start.X - end.X).Abs();
         Depth = (start.Y - end.Y).Abs();
         Height = (start.Z - end.Z).Abs();
 
-        Origin = new MapPoint3D(Math.Min(start.X, end.X), Math.Min(start.Y, end.Y), Math.Min(start.Z, end.Z));
+        Origin = new Point3D(Math.Min(start.X, end.X), Math.Min(start.Y, end.Y), Math.Min(start.Z, end.Z));
     }
     
     public bool Intersects(Cube otherCube)

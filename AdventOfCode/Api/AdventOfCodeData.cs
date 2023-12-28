@@ -9,6 +9,7 @@ public class AdventOfCodeData
 
     private readonly AdventOfCodeWebsite website;
     private readonly string tmpFolder;
+    private readonly int day;
 
     #endregion
 
@@ -16,6 +17,7 @@ public class AdventOfCodeData
 
     public AdventOfCodeData(int day)
     {
+        this.day = day;
         var session = File.ReadAllText("SessionToken.txt");
         website = new AdventOfCodeWebsite(day, session);
 
@@ -46,7 +48,7 @@ public class AdventOfCodeData
 
     #region Properties
 
-    public AnswerChecker Answers => new(tmpFolder, website);
+    public AnswerChecker Answers => new(tmpFolder, website, day);
 
     public Input RealInput => new(() => GetFromCachedFile("RealData", () => website.Get("/input")));
 

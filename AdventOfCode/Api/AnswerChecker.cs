@@ -7,11 +7,13 @@ namespace AdventOfCode.Api;
 public class AnswerChecker
 {
     private readonly AdventOfCodeWebsite httpClient;
+    private readonly int day;
     private readonly string filePath;
 
-    internal AnswerChecker(string tmpFolder, AdventOfCodeWebsite httpClient)
+    internal AnswerChecker(string tmpFolder, AdventOfCodeWebsite httpClient, int day)
     {
         this.httpClient = httpClient;
+        this.day = day;
         filePath = Path.Combine(tmpFolder, "answers.json");
     }
 
@@ -54,6 +56,12 @@ public class AnswerChecker
                 return;
             }
 
+            if (!answerForLevel.Real.IsNullOrEmpty())
+            {
+                $"Provided answer for part {level} '{answer}' is different from already accepted '{answerForLevel.Real}'".Dump(ConsoleColor.Red);
+                return;
+            }
+
         submit:
 
             if (!$"Should submit answer for part {level} '{answer}'?".Ask(ConsoleColor.Yellow))
@@ -78,6 +86,26 @@ public class AnswerChecker
             {
                 "That's the right answer".Dump(ConsoleColor.Green);
                 answerForLevel.Real = answer;
+
+                if (day != 25)
+                    return;
+
+                //for last day, send answer for level 2 immediately (there is no answer)
+                var doc = new HtmlDocument();
+                doc.LoadHtml(result);
+                if (!int.TryParse(doc.DocumentNode.SelectNodes("//span").First(x => x.HasClass("star-count")).InnerText.TrimEnd('*'), out var stars))
+                    return;
+
+                if (stars == 49)
+                {
+                    "You have all needed stars, submitting part 2".Dump(ConsoleColor.Green);
+                    httpClient.Send("/answer", new Dictionary<string, string> { { "level", "2" }, { "answer", "0" } });
+                }
+                else
+                {
+                    $"You are missing {49 - stars} stars for part 2".Dump(ConsoleColor.Yellow);
+                }
+
                 return;
             }
 
