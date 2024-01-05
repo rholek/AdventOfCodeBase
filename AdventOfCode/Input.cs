@@ -56,6 +56,8 @@ public class Input
     private IReadOnlyList<string>? lines;
     public IReadOnlyList<string> Lines => lines ??= InputText.Trim().Split(NEW_LINE).Select(x => x.Trim()).ToList();
 
+    public string SingleLine => Lines.Single();
+
     public IList<string> AllLinesWithoutTrim => InputText.Split(NEW_LINE).ToList();
 
     public IEnumerable<IEnumerable<string>> GroupsSplitByEmptyLine =>
