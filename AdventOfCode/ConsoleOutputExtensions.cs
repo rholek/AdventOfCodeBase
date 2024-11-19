@@ -68,6 +68,8 @@ public static class ConsoleOutputExtensions
 
     public static T Part1<T>(this T o, bool print = false)
     {
+        if (ResultHolder.Part1Set)
+            return o;
         ResultHolder.Part1 = o.ToString();
         if (print)
             Console.WriteLine("Part 1: " + o);
@@ -76,6 +78,8 @@ public static class ConsoleOutputExtensions
 
     public static T Part2<T>(this T o, bool print = false)
     {
+        if (ResultHolder.Part2Set)
+            return o;
         ResultHolder.Part2 = o.ToString();
         if (print)
             Console.WriteLine("Part 2: " + o);
