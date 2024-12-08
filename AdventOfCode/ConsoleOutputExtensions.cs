@@ -86,6 +86,11 @@ public static class ConsoleOutputExtensions
         return o;
     }
 
+    public static void Dump<T>(this Map<T> data)
+    {
+        PrintDictionary(data, x => x?.ToString() ?? string.Empty);
+    }
+
     public static void Dump<T>(this IDictionary<(int x, int y), T> data)
     {
         PrintDictionary(data, x => x?.ToString() ?? string.Empty);

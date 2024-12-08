@@ -198,6 +198,11 @@ public static class Extensions
         // ReSharper disable once StringNullOrEmptyExtensionCall
         return string.IsNullOrWhiteSpace(s);
     }
+    
+    public static string Truncate(this string toTruncate, int length)
+    {
+        return toTruncate.Substring(0, length);
+    }
 
     public static IEnumerable<int> GetAllIndexes(this string source, string matchString)
     {

@@ -143,6 +143,11 @@ public class Map<T> : IDictionary<Point2D, T>
         return dictionaryImplementation.Contains(item);
     }
 
+    public bool ContainsPosition(Point2D item)
+    {
+        return dictionaryImplementation.ContainsKey(item);
+    }
+
     public void CopyTo(KeyValuePair<Point2D, T>[] array, int arrayIndex)
     {
         dictionaryImplementation.CopyTo(array, arrayIndex);

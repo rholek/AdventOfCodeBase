@@ -131,6 +131,13 @@ public static class DirectionExtensions
         }
     }
 
+    public static Point2D GetOffsetRelativeTo(this Point2D from, Point2D to)
+    {
+        var rowDiff = from.row - to.row;
+        var columnDiff = from.column - to.column;
+        return (columnDiff, rowDiff);
+    }
+
     public static Direction GetDirection(this Point2D from, Point2D to)
     {
         var rowDiff = to.row - from.row;
