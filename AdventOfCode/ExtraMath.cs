@@ -58,6 +58,11 @@ public static class ExtraMath
         return number.AllPrimeFactors().Count == 1;
     }
 
+    public static bool IsEven(this int number)
+    {
+        return number % 2 == 0;
+    }
+
     public static IReadOnlyList<long> AllPrimeFactors(this long number)
     {
         if (number < 1)
