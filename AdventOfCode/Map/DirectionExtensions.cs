@@ -159,4 +159,9 @@ public static class DirectionExtensions
             return Direction.UpRight;
         return Direction.UpLeft;
     }
+
+    public static bool IsHorizontal(this Direction direction)
+    {
+        return direction is Direction.Left or Direction.Right;
+    }
 }

@@ -86,7 +86,7 @@ public static class MapExtensions
         return Merge(first, second, (value, value1) => throw new Exception("No aggregation function defined"));
     }
 
-    public static Map<TValue> Merge<TValue>(this Map<TValue> first, Map<TValue> second, Func<TValue, TValue, TValue> aggregateFunc) 
+    public static Map<TValue> Merge<TValue>(this Map<TValue> first, Map<TValue> second, Func<TValue, TValue, TValue> aggregateFunc)
     {
         var result = first.ToDictionary(x => x.Key, x => x.Value);
         foreach (var (key, value) in second)
@@ -98,5 +98,30 @@ public static class MapExtensions
         }
 
         return new Map<TValue>(result);
+    }
+
+    public static IEnumerable<IReadOnlyCollection<Point2D>> SplitIntoRegions<TValue>(this Map<TValue> map)
+    {
+        var allPoints = map.Keys.ToList();
+        while (allPoints.Any())
+        {
+            var region = new HashSet<Point2D>();
+            GetRegion(allPoints.First(), region);
+            allPoints.RemoveAll(region.Contains);
+            yield return region;
+        }
+
+        void GetRegion(Point2D point, HashSet<Point2D> pointsInRegion)
+        {
+            var valueForPoint = map[point];
+            if (!pointsInRegion.Add(point))
+                return;
+
+            foreach (var adjacentPoint in point.GetAdjacentWithoutDiagonal())
+            {
+                if (Equals(map[adjacentPoint], valueForPoint))
+                    GetRegion(adjacentPoint, pointsInRegion);
+            }
+        }
     }
 }
