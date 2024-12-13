@@ -38,4 +38,15 @@ public class FractionTests
     {
         (Fraction.Parse(first) / Fraction.Parse(second)).Should().Be(Fraction.Parse(result));
     }
+
+    [Theory]
+    [InlineData("4/2", true)]
+    [InlineData("4/4", true)]
+    [InlineData("2/4", false)]
+    [InlineData("15/5", true)]
+    [InlineData("268/111", false)]
+    public void Fraction_IsWholeNumberTest(string fraction, bool isWholeNumber)
+    {
+        Fraction.Parse(fraction).IsWholeNumber().Should().Be(isWholeNumber);
+    }
 }
