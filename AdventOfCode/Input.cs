@@ -7,7 +7,7 @@ public class Input
 {
     #region Constants
 
-    private const char NEW_LINE = '\n';
+    public const char NEW_LINE = '\n';
 
     #endregion
 
