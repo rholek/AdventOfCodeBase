@@ -204,6 +204,11 @@ public static class Extensions
         return toTruncate.Substring(0, length);
     }
 
+    public static IEnumerable<string> AsEnumerableOfCharacters(this string input)
+    {
+        return input.Select(x=>x.ToString());
+    }
+
     public static IEnumerable<int> GetAllIndexes(this string source, string matchString)
     {
         //matchString = Regex.Escape(matchString);

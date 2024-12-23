@@ -39,4 +39,14 @@ public static class NumberConversions
             }
         }
     }
+
+    public static string DecToBin(string number)
+    {
+        return DecToBin(int.Parse(number));
+    }
+
+    public static string DecToBin(int number)
+    {
+        return Convert.ToString(number, 2);
+    }
 }

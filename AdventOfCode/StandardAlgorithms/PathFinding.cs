@@ -67,6 +67,25 @@ public class PathFinding<T> where T : notnull
         throw new Exception("Path not found.");
     }
 
+    public IReadOnlyDictionary<T, long> CalculateAllCosts(T from)
+    {
+        var costs = new Dictionary<T, long>();
+        var queue = new PriorityQueue<T, long>();
+        queue.Enqueue(from, 0);
+        while (queue.TryDequeue(out var currentPosition, out var currentCost))
+        {
+            if (!costs.TryAdd(currentPosition, currentCost))
+                continue;
+
+            foreach (var reachable in reachableFunction(currentPosition))
+            {
+                queue.Enqueue(reachable, currentCost + costFunction(currentPosition, reachable));
+            }
+        }
+
+        return costs;
+    }
+
     private bool TryGetCost(T startPoint, Func<T, bool> endReached, out long totalCost, out Dictionary<T, T> bestPath)
     {
         var minCosts = new Dictionary<T, long>
