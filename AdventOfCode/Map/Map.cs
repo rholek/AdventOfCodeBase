@@ -56,9 +56,9 @@ public class Map<T> : IDictionary<Point2D, T>
     /// </summary>
     public Rectangle CalculateArea() => new Rectangle(this.Min(x => x.Key.column), this.Min(x => x.Key.row), Width, Height);
 
-    public IEnumerable<T> GetColumn(int index) => this.Where(x => x.Key.column == index).Select(x => x.Value);
+    public IEnumerable<T> GetColumn(int index) => this.Where(x => x.Key.column == index).OrderBy(x => x.Key.row).Select(x => x.Value);
 
-    public IEnumerable<T> GetRow(int index) => this.Where(x => x.Key.row == index).Select(x => x.Value);
+    public IEnumerable<T> GetRow(int index) => this.Where(x => x.Key.row == index).OrderBy(x => x.Key.column).Select(x => x.Value);
 
 
     public void ShiftColumn(int columnIndex, int step)
