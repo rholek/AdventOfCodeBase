@@ -164,9 +164,9 @@ public static class ExtraMath
         return startValue * (1 - Math.Pow(distance, count + 1)) / (1 - distance);
     }
 
-    public static int ModuloPositive(int x, int mod) => ((x % mod) + mod) % mod;
+    public static int ModuloPositive(this int x, int mod) => ((x % mod) + mod) % mod;
 
-    public static long ModuloPositive(long x, long mod) => ((x % mod) + mod) % mod; 
+    public static long ModuloPositive(this long x, long mod) => ((x % mod) + mod) % mod; 
 
     #endregion
 }
